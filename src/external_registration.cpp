@@ -27,6 +27,9 @@
 
 #if LIBQI_VERSION >= 29
 #include "driver_authenticator.hpp"
+#include <stdio.h>
+#include <string>
+#include <sstream>
 #endif
 
 
@@ -89,8 +92,10 @@ int main(int argc, char** argv)
               << std::endl;
 #endif
   }
-
-  qi::Url url(protocol + vm["nao_ip"].as<std::string>() + ":" + std::to_string(vm["nao_port"].as<int>()));
+  
+  std::ostringstream oss;
+  oss << vm["nao_port"].as<int>();
+  qi::Url url(protocol + vm["nao_ip"].as<std::string>() + ":" + oss.str());
   qi::Future<void> connection = app.session()->connect(url);
 
   if (connection.hasError()) {
